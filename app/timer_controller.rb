@@ -18,4 +18,8 @@ class TimerController < UIViewController
     @action.frame = [[margin, 260], [view.frame.size.width - margin * 2, 40]]
     view.addSubview(@action)
   end
+
+  def actionTapped
+    puts "tap!"
+  end
 end
