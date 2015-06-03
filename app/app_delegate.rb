@@ -4,10 +4,9 @@ class AppDelegate
     rootViewController.title = 'timer-ios'
     rootViewController.view.backgroundColor = UIColor.whiteColor
 
-    navigationController = UINavigationController.alloc.initWithRootViewController(rootViewController)
-
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = navigationController
+    @window.rootViewController = TimerController.alloc.init
+    @window.rootViewController.wantsFullScreenLayout = true
     @window.makeKeyAndVisible
 
     true
