@@ -1,32 +1,16 @@
 class TimerController < UIViewController
-  def viewDidLoad
-    margin = 20
+  MARGIN = 20
 
-    @state = UILabel.new
-    @state.font = UIFont.systemFontOfSize(30)
-    @state.text = 'Tap to start'
-    @state.textAlignment = UITextAlignmentCenter
-    @state.textColor = UIColor.whiteColor
-    @state.backgroundColor = UIColor.clearColor
-    @state.frame = [[margin, 200], [view.frame.size.width - margin * 2, 40]]
+  def viewDidLoad
+    init_state
     view.addSubview(@state)
 
-    @action = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    @action.setTitle('Start', forState:UIControlStateNormal)
-    @action.setTitle('Stop', forState:UIControlStateSelected)
-    @action.addTarget(self, action:'actionTapped', forControlEvents:UIControlEventTouchUpInside)
-    @action.frame = [[margin, 260], [view.frame.size.width - margin * 2, 40]]
+    init_action
     view.addSubview(@action)
   end
 
   def actionTapped
-    if @timer
-      @timer.invalidate
-      @timer = nil
-    else
-      @duration = 0
-      @timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
-    end
+    init_timer
 
     @action.selected = !@action.selected?
   end
@@ -34,4 +18,38 @@ class TimerController < UIViewController
   def timerFired
     @state.text = "%.1f" % (@duration += 0.1)
   end
+
+  private
+
+    def init_state
+      state = UILabel.new
+      state.font = UIFont.systemFontOfSize(30)
+      state.text = 'Tap to start'
+      state.textAlignment = UITextAlignmentCenter
+      state.textColor = UIColor.whiteColor
+      state.backgroundColor = UIColor.clearColor
+      state.frame = [[MARGIN, 200], [view.frame.size.width - MARGIN * 2, 40]]
+
+      @state = state
+    end
+
+    def init_action
+      action = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+      action.setTitle('Start', forState:UIControlStateNormal)
+      action.setTitle('Stop', forState:UIControlStateSelected)
+      action.addTarget(self, action:'actionTapped', forControlEvents:UIControlEventTouchUpInside)
+      action.frame = [[MARGIN, 260], [view.frame.size.width - MARGIN * 2, 40]]
+
+      @action = action
+    end
+
+    def init_timer
+      if @timer
+        @timer.invalidate
+        @timer = nil
+      else
+        @duration = 0
+        @timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
+      end
+    end
 end
